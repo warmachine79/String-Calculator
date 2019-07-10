@@ -85,4 +85,11 @@ public class StringCalculatorTest
         }
         Assert.assertEquals(total, stringCalculator.Add(numberList.toString()));
     }
+
+    @Test
+    public void testNewDelimiter()
+    {
+        Assert.assertEquals(3, stringCalculator.Add("//;\n1;2"));
+        Assert.assertEquals(28, stringCalculator.Add("//;\n1;2,3\n4,5;6;7"));
+    }
 }
