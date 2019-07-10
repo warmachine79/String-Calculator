@@ -53,7 +53,36 @@ public class StringCalculatorTest
             numberList.append(",");
             total+=number;
         }
-        System.out.println(total);
+        Assert.assertEquals(total, stringCalculator.Add(numberList.toString()));
+    }
+
+    @Test
+    public void testNewlines()
+    {
+        Assert.assertEquals(25, stringCalculator.Add("9,6\n5\n2,3"));
+    }
+
+    @Test
+    public void testRandomNumbersNewlines()
+    {
+        Random random = new Random();
+        int numbers = random.nextInt(10);
+        StringBuilder numberList = new StringBuilder();
+        int total = 0;
+        for (int i = 0; i <= numbers; i++)
+        {
+            int number = random.nextInt(1000);
+            numberList.append(number);
+            if (0 == i % 2)
+            {
+                numberList.append(",");
+            }
+            else
+            {
+                numberList.append("\n");
+            }
+            total+=number;
+        }
         Assert.assertEquals(total, stringCalculator.Add(numberList.toString()));
     }
 }
