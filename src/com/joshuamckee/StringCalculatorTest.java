@@ -132,4 +132,11 @@ public class StringCalculatorTest
         Assert.assertEquals(6, stringCalculator.Add("//[*][%]\n1*2%3"));
         Assert.assertEquals(28, stringCalculator.Add("//[;][@]\n1;2@3\n4,5;6@7"));
     }
+
+    @Test
+    public void testMultipleDelimitersAndMultiChar()
+    {
+        Assert.assertEquals(6, stringCalculator.Add("//[**][%%]\n1**2%%3"));
+        Assert.assertEquals(28, stringCalculator.Add("//[;@][$;]\n1;@2$;3\n4,5;@6$;7"));
+    }
 }
