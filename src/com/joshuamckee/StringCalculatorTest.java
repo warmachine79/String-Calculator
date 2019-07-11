@@ -15,15 +15,6 @@ public class StringCalculatorTest
     public ExpectedException ex = ExpectedException.none();
 
     StringCalculator stringCalculator = new StringCalculator();
-    @Before
-    public void setUp()
-    {
-    }
-
-    @After
-    public void tearDown()
-    {
-    }
 
     @Test
     public void testEmptyStringAdd()
@@ -103,5 +94,13 @@ public class StringCalculatorTest
         ex.expect(Exception.class);
         ex.expectMessage("Negatives not allowed -2");
         stringCalculator.Add("//;\n1;-2,3,5;17");
+    }
+
+    @Test
+    public void testMultipleNegativeNumbers()
+    {
+        ex.expect(Exception.class);
+        ex.expectMessage("Negatives not allowed -6, -4, -2");
+        stringCalculator.Add("//;\n1;-2,3\n-4,5;-6;17");
     }
 }

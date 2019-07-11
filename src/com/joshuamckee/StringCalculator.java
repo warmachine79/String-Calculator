@@ -14,9 +14,11 @@ class StringCalculator
     final static int NEW_LINE_CHAR_LENGTH = 1;
     final static String NEGATIVE_MESSAGE = "Negatives not allowed ";
     final static String REGEX_EXPRESSION_INTEGERS = "-?\\d+";
+    private int addCalledCount = 0;
 
     int Add(String numbers)
     {
+        addCalledCount++;
         if (numbers.startsWith(DELIMITER_NOTATION))
         {
             // skip delimiter signifying new delimiter
@@ -31,11 +33,23 @@ class StringCalculator
             .map(Integer::valueOf)
             .sorted()
             .collect(Collectors.toList());
-        System.out.println(numbersList);
         if (!numbersList.isEmpty() && numbersList.get(0) < 0)
         {
-            throw new RuntimeException(
-                NEGATIVE_MESSAGE + numbersList.get(0));
+            StringBuilder exceptionMessage =
+                new StringBuilder(NEGATIVE_MESSAGE);
+            for (Integer i : numbersList)
+            {
+                if (i < 0)
+                {
+                    exceptionMessage.append(i).append(", ");
+                }
+                else
+                {
+                    exceptionMessage.setLength(exceptionMessage.length()-2);
+                    break;
+                }
+            }
+            throw new RuntimeException(exceptionMessage.toString());
         }
         return numbersList.stream().mapToInt(Integer::valueOf).sum();
     }
