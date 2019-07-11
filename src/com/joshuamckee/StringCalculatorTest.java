@@ -1,14 +1,18 @@
 package com.joshuamckee;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 import java.util.Random;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class StringCalculatorTest
 {
+
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
 
     StringCalculator stringCalculator = new StringCalculator();
     @Before
@@ -91,5 +95,13 @@ public class StringCalculatorTest
     {
         Assert.assertEquals(3, stringCalculator.Add("//;\n1;2"));
         Assert.assertEquals(28, stringCalculator.Add("//;\n1;2,3\n4,5;6;7"));
+    }
+
+    @Test
+    public void testNegativeNumbers()
+    {
+        ex.expect(Exception.class);
+        ex.expectMessage("Negatives not allowed -2");
+        stringCalculator.Add("//;\n1;-2,3,5;17");
     }
 }
