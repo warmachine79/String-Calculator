@@ -112,4 +112,10 @@ public class StringCalculatorTest
         testNewDelimiter();
         Assert.assertEquals(4, stringCalculator.GetCalledCount());
     }
+
+    @Test
+    public void testExcludeNumbersAboveOneThousand()
+    {
+        Assert.assertEquals(28, stringCalculator.Add("//;\n1;2,1002,3\n4,5;6,1005;7"));
+    }
 }

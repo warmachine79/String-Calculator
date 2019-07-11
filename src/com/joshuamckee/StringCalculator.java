@@ -32,6 +32,7 @@ class StringCalculator
             .filter((s) -> s.matches(REGEX_EXPRESSION_INTEGERS))
             .map(Integer::valueOf)
             .sorted()
+            .filter(i -> i<1000)
             .collect(Collectors.toList());
         if (!numbersList.isEmpty() && numbersList.get(0) < 0)
         {
