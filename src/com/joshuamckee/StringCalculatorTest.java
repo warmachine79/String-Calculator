@@ -103,4 +103,13 @@ public class StringCalculatorTest
         ex.expectMessage("Negatives not allowed -6, -4, -2");
         stringCalculator.Add("//;\n1;-2,3\n-4,5;-6;17");
     }
+
+    @Test
+    public void testGetCalledCount()
+    {
+        testEmptyStringAdd();
+        testAddOneNumber();
+        testNewDelimiter();
+        Assert.assertEquals(4, stringCalculator.GetCalledCount());
+    }
 }

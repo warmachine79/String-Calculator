@@ -53,4 +53,9 @@ class StringCalculator
         }
         return numbersList.stream().mapToInt(Integer::valueOf).sum();
     }
+
+    int GetCalledCount()
+    {
+        return this.addCalledCount;
+    }
 }
