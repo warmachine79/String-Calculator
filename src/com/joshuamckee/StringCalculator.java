@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 
 class StringCalculator
 {
-    final static String MULTI_CHAR_DELIMITER_NOTATION = "//[";
-    final static String DELIMITER_NOTATION = "//";
-    final static int DELIMITER_NOTATION_LENGTH = 2;
-    final static int MULTI_CHAR_DELIMITER_NOTATION_LENGTH = 3;
-    final static int NEW_LINE_CHAR_LENGTH = 1;
-    final static String NEGATIVE_MESSAGE = "Negatives not allowed ";
-    final static String REGEX_EXPRESSION_INTEGERS = "-?\\d+";
+    private static final String MULTI_CHAR_DELIMITER_NOTATION = "//[";
+    private static final String DELIMITER_NOTATION = "//";
+    private static final int DELIMITER_NOTATION_LENGTH = 2;
+    private static final int NEW_LINE_CHAR_LENGTH = 1;
+    private static final String NEGATIVE_MESSAGE = "Negatives not allowed ";
+    private static final String REGEX_EXPRESSION_INTEGERS = "-?\\d+";
+    private static final int INTEGER_THRESHOLD = 1000;
     private int addCalledCount = 0;
 
     int Add(String numbers)
@@ -22,19 +22,25 @@ class StringCalculator
         StringBuilder delimiters = new StringBuilder(",\n");
         StringBuilder multiCharDelimiters = new StringBuilder();
         addCalledCount++;
-        if (numbers.startsWith(MULTI_CHAR_DELIMITER_NOTATION))
+        if (numbers.startsWith(DELIMITER_NOTATION))
         {
-            // skip delimiter signifying new delimiter
-            multiCharDelimiters.append("|[").append(numbers, MULTI_CHAR_DELIMITER_NOTATION_LENGTH,
-                numbers.indexOf("\n")-1).append("]");
-            // skip newline token
-            numbers = numbers.substring(numbers.indexOf("\n")
-                + NEW_LINE_CHAR_LENGTH);
-        }
-        else if (numbers.startsWith(DELIMITER_NOTATION))
-        {
-            // skip delimiter signifying new delimiter
-            delimiters.append(numbers, DELIMITER_NOTATION_LENGTH, numbers.indexOf("\n"));
+            if (numbers.startsWith(MULTI_CHAR_DELIMITER_NOTATION))
+            {
+                // skip delimiter signifying new delimiter
+                multiCharDelimiters.append(numbers, DELIMITER_NOTATION_LENGTH,
+                    numbers.indexOf("\n"));
+                int index = multiCharDelimiters.indexOf("[");
+                while (index >= 0)
+                {
+                    multiCharDelimiters.insert(index, "|");
+                    index = multiCharDelimiters.indexOf("[", index+2);
+                }
+            }
+            else
+            {
+                // skip delimiter signifying new delimiter
+                delimiters.append(numbers, DELIMITER_NOTATION_LENGTH, numbers.indexOf("\n"));
+            }
             // skip newline token
             numbers = numbers.substring(numbers.indexOf("\n")
                 + NEW_LINE_CHAR_LENGTH);
@@ -45,7 +51,7 @@ class StringCalculator
             .filter((s) -> s.matches(REGEX_EXPRESSION_INTEGERS))
             .map(Integer::valueOf)
             .sorted()
-            .filter(i -> i<1000)
+            .filter(i -> i<INTEGER_THRESHOLD)
             .collect(Collectors.toList());
         if (!numbersList.isEmpty() && numbersList.get(0) < 0)
         {
