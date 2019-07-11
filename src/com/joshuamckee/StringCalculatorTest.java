@@ -118,4 +118,11 @@ public class StringCalculatorTest
     {
         Assert.assertEquals(28, stringCalculator.Add("//;\n1;2,1002,3\n4,5;6,1005;7"));
     }
+
+    @Test
+    public void testMultiCharacterDelimiter()
+    {
+        Assert.assertEquals(6, stringCalculator.Add("//[***]\n1***2***3"));
+        Assert.assertEquals(28, stringCalculator.Add("//[--]\n1--2,3\n4,5--6--7"));
+    }
 }

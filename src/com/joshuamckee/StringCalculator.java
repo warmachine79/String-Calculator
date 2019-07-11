@@ -8,9 +8,10 @@ import java.util.stream.Collectors;
 
 class StringCalculator
 {
-    StringBuilder delimiters = new StringBuilder(",\n");
+    final static String MULTI_CHAR_DELIMITER_NOTATION = "//[";
     final static String DELIMITER_NOTATION = "//";
     final static int DELIMITER_NOTATION_LENGTH = 2;
+    final static int MULTI_CHAR_DELIMITER_NOTATION_LENGTH = 3;
     final static int NEW_LINE_CHAR_LENGTH = 1;
     final static String NEGATIVE_MESSAGE = "Negatives not allowed ";
     final static String REGEX_EXPRESSION_INTEGERS = "-?\\d+";
@@ -18,8 +19,19 @@ class StringCalculator
 
     int Add(String numbers)
     {
+        StringBuilder delimiters = new StringBuilder(",\n");
+        StringBuilder multiCharDelimiters = new StringBuilder();
         addCalledCount++;
-        if (numbers.startsWith(DELIMITER_NOTATION))
+        if (numbers.startsWith(MULTI_CHAR_DELIMITER_NOTATION))
+        {
+            // skip delimiter signifying new delimiter
+            multiCharDelimiters.append("|[").append(numbers, MULTI_CHAR_DELIMITER_NOTATION_LENGTH,
+                numbers.indexOf("\n")-1).append("]");
+            // skip newline token
+            numbers = numbers.substring(numbers.indexOf("\n")
+                + NEW_LINE_CHAR_LENGTH);
+        }
+        else if (numbers.startsWith(DELIMITER_NOTATION))
         {
             // skip delimiter signifying new delimiter
             delimiters.append(numbers, DELIMITER_NOTATION_LENGTH, numbers.indexOf("\n"));
@@ -28,6 +40,7 @@ class StringCalculator
                 + NEW_LINE_CHAR_LENGTH);
         }
         delimiters.insert(0, "[").append("]");
+        delimiters.append(multiCharDelimiters);
         List<Integer> numbersList = Arrays.stream(numbers.split(delimiters.toString()))
             .filter((s) -> s.matches(REGEX_EXPRESSION_INTEGERS))
             .map(Integer::valueOf)
